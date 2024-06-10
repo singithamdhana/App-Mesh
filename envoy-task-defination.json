@@ -1,0 +1,96 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:xxxxxxxxxxxx:task-definition/envoyProxy-VG-td2:3",
+    "containerDefinitions": [
+        {
+            "name": "envoyproxy-vg-td2",
+            "image": "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.27.3.0-prod",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "envoyproxy-vg-td2-8080-tcp",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "APPMESH_RESOURCE_ARN",
+                    "value": "arn:aws:appmesh:us-east-2:xxxxxxxxxxxxxx:mesh/local_mesh/virtualGateway/automotive-testing"
+                },
+                {
+                    "name": "ENVOY_LOG_LEVEL",
+                    "value": "debug"
+                },
+                {
+                    "name": "REGION",
+                    "value": "us-east-2"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/envoyProxy-VG-td2",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "envoyProxy-VG-td2",
+    "taskRoleArn": "arn:aws:iam::xxxxxxxxxxxxxx:role/QT_ECS_Task_Execution_Role",
+    "executionRoleArn": "arn:aws:iam::xxxxxxxxxxxxxx:role/QT_ECS_Task_Execution_Role",
+    "networkMode": "awsvpc",
+    "revision": 3,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-06-05T17:27:00.351Z",
+    "registeredBy": "arn:aws:iam::xxxxxxxxxxxxxx:user/Dhanalakshmi.Singitham",
+    "tags": []
+}

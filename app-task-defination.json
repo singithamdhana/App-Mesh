@@ -1,0 +1,163 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:xxxxxxxxxxxx:task-definition/opera-td:11",
+    "containerDefinitions": [
+        {
+            "name": "opera",
+            "image": "xxxxxxxxxxxx.dkr.ecr.us-east-2.amazonaws.com/docker-practice:abdulfayis-operaapp",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "opera-9002-tcp",
+                    "containerPort": 9002,
+                    "hostPort": 9002,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": false,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/opera-td",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "envoy",
+            "image": "public.ecr.aws/appmesh/aws-appmesh-envoy:v1.27.3.0-prod",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "envoy-8080-tcp",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "APPMESH_RESOURCE_ARN",
+                    "value": "arn:aws:appmesh:us-east-2:xxxxxxxxxxxx:mesh/local_mesh/virtualNode/opera-VN"
+                },
+                {
+                    "name": "ENVOY_LOG_LEVEL",
+                    "value": "trace"
+                },
+                {
+                    "name": "REGION",
+                    "value": "us-east-2"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "user": "1337",
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/opera-td-envoy",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-2",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "opera-td",
+    "taskRoleArn": "arn:aws:iam::xxxxxxxxxxxx:role/QT_ECS_Task_Execution_Role",
+    "executionRoleArn": "arn:aws:iam::xxxxxxxxxxxx:role/QT_ECS_Task_Execution_Role",
+    "networkMode": "awsvpc",
+    "revision": 11,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.aws-appmesh"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "proxyConfiguration": {
+        "type": "APPMESH",
+        "containerName": "envoy",
+        "properties": [
+            {
+                "name": "ProxyIngressPort",
+                "value": "9002"
+            },
+            {
+                "name": "AppPorts",
+                "value": "9002"
+            },
+            {
+                "name": "EgressIgnoredIPs",
+                "value": ""
+            },
+            {
+                "name": "EgressIgnoredPorts",
+                "value": ""
+            },
+            {
+                "name": "IgnoredUID",
+                "value": "1337"
+            },
+            {
+                "name": "ProxyEgressPort",
+                "value": "9002"
+            }
+        ]
+    },
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-06-07T10:08:45.567Z",
+    "registeredBy": "arn:aws:iam::xxxxxxxxxxxx:user/Dhanalakshmi.Singitham",
+    "tags": []
+}
